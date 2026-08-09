@@ -7,6 +7,7 @@ const routes = [
   "/about",
   "/display",
   "/patient/p-l-001/status",
+  "/patient/p-l-001/ticket",
   "/dashboard",
   "/patients",
   "/patients/new",
@@ -63,7 +64,7 @@ test("app loads, auth flow works, and protected routes survive refresh", async (
 
   await page.goto("/");
   await expect(page).toHaveURL(/\/login$/);
-  await expect(page.getByRole("heading", { name: /predstavitveni dostop/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /predstavitvena seja/i })).toBeVisible();
 
   await loginWithDemoData(page);
   await expect(page.getByRole("heading", { name: /nadzorna/i })).toBeVisible();
@@ -176,5 +177,23 @@ test("patient CRUD, validation, search, queues, reports, and settings work", asy
   await expect(page.getByLabel(/naziv ustanove/i)).toHaveValue("Demo zdravstveni center");
   await saveScreenshot(page, testInfo.project.name, "flow-complete");
 
+  expect(consoleErrors).toEqual([]);
+});
+
+test("portable QR snapshot works without the originating browser state", async ({ page }) => {
+  const consoleErrors = seriousMessages(page);
+  const params = new URLSearchParams({
+    number: "LAB-404",
+    status: "Čaka na odvzem",
+    department: "laboratorij",
+    room: "lab-1",
+    arrival: "2026-08-09T12:00:00.000Z",
+  });
+
+  await page.goto(`/patient/not-local/status?${params.toString()}`);
+  await expect(page.getByText("LAB-404", { exact: true })).toBeVisible();
+  await expect(page.getByText(/posnetek iz qr kode/i)).toBeVisible();
+  await expect(page.getByText(/ni podatka v živo/i)).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("A.B.");
   expect(consoleErrors).toEqual([]);
 });

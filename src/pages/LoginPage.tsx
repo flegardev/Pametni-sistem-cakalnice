@@ -95,11 +95,15 @@ export const LoginPage = () => {
         </div>
       </section>
       <section className="login-card" aria-labelledby="login-title">
-        <h2 id="login-title">Predstavitveni dostop</h2>
+        <h2 id="login-title">Predstavitvena seja</h2>
         <p>
           Za predstavitev lahko zaženete demo z realističnimi pacienti ali
           vstopite z izbrano vlogo osebja.
         </p>
+        <div className="demo-boundary" role="note">
+          <ShieldCheck size={20} aria-hidden="true" />
+          <p><strong>To ni prava prijava.</strong> Ime in vloga sta lokalna demo podatka brez gesla ali strežniškega preverjanja. Aplikacije ne uporabljajte za resnične paciente.</p>
+        </div>
         <form
           onSubmit={(event) => {
             event.preventDefault();

@@ -20,6 +20,7 @@ import type { Patient, PatientStatus } from "../types";
 import { formatTime } from "../utils/format";
 import { getDepartmentName, getRoomName, sortQueuePatients } from "../utils/queue";
 import { openAppWindow } from "../utils/window";
+import { createPublicPatientStatusPath } from "../utils/publicStatus";
 
 type SortMode = "priority" | "arrival" | "number";
 
@@ -228,7 +229,7 @@ export const PatientsPage = () => {
                       title="Natisni listek"
                       type="button"
                       onClick={() => {
-                        printPatientTicket(patient, settings);
+                        printPatientTicket(patient);
                         notify({
                           title: "Listek odprt",
                           description: `${patient.number} je pripravljen za tisk.`,
@@ -244,7 +245,7 @@ export const PatientsPage = () => {
                       title="Odpri QR status"
                       type="button"
                       onClick={() => {
-                        openAppWindow(patient.qrCodeUrl);
+                        openAppWindow(createPublicPatientStatusPath(patient));
                         notify({
                           title: "QR status odprt",
                           description: `Odprta je stran za ${patient.number}.`,
@@ -349,7 +350,7 @@ export const PatientsPage = () => {
                   title="Natisni listek"
                   type="button"
                   onClick={() => {
-                    printPatientTicket(patient, settings);
+                    printPatientTicket(patient);
                     notify({
                       title: "Listek odprt",
                       description: `${patient.number} je pripravljen za tisk.`,
@@ -365,7 +366,7 @@ export const PatientsPage = () => {
                   title="Odpri QR status"
                   type="button"
                   onClick={() => {
-                    openAppWindow(patient.qrCodeUrl);
+                    openAppWindow(createPublicPatientStatusPath(patient));
                     notify({
                       title: "QR status odprt",
                       description: `Odprta je stran za ${patient.number}.`,

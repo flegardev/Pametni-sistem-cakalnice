@@ -11,14 +11,14 @@ export default defineConfig({
   reporter: [["list"]],
   use: {
     baseURL: "http://127.0.0.1:5173",
-    channel: "chrome",
+    channel: process.env.PW_CHANNEL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
   },
   webServer: {
-    command: "npm run dev -- --port 5173",
+    command: "npm run build && npm run preview -- --port 5173 --strictPort",
     url: "http://127.0.0.1:5173",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: process.env.PW_REUSE_SERVER === "true",
     timeout: 120_000,
   },
   projects: [
