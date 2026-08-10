@@ -92,6 +92,13 @@ export const AboutPage = () => {
             Sistem ni medicinska diagnoza, ni uradno eNaročanje in ni nadomestilo
             za potrjene zdravstvene informacijske sisteme. Namenjen je prikazu
             čakalniškega toka, osnovnemu obveščanju in boljši organizaciji dela.
+            Izbira vloge je samo lokalna predstavitvena seja, ne avtentikacija ali
+            avtorizacija. QR koda na drugi napravi prikazuje le posnetek stanja ob
+            izdaji listka; za varen status v živo je potreben strežniški sistem.
+          </p>
+          <p className="author-credit">
+            Avtor: <strong>Tini Flegar</strong> · Full-Stack Developer · IT &amp; Finance ·{" "}
+            <a href="mailto:flegardev@gmail.com">flegardev@gmail.com</a>
           </p>
         </div>
       </section>

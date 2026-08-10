@@ -2748,6 +2748,133 @@ textarea[aria-invalid="true"] {
   }
 }
 
+.demo-boundary,
+.snapshot-notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px;
+  border: 1px solid #f0c36a;
+  border-radius: 12px;
+  background: #fff9e8;
+  color: #5c4517;
+}
+
+.demo-boundary p,
+.snapshot-notice {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.author-credit a {
+  color: inherit;
+  font-weight: 700;
+}
+
+.ticket-page {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background: #f4f7fb;
+}
+
+.print-ticket {
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 28px;
+  border: 1px solid #d8e0ea;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 20px 50px rgb(15 23 42 / 10%);
+}
+
+.print-ticket header {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.print-ticket h1,
+.print-ticket header p,
+.print-ticket dl,
+.ticket-qr p {
+  margin: 0;
+}
+
+.ticket-number {
+  font-size: clamp(2.2rem, 9vw, 3.4rem);
+  line-height: 1;
+}
+
+.print-ticket dl {
+  margin-top: 24px;
+}
+
+.print-ticket dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 11px 0;
+  border-top: 1px solid #e5e9ef;
+}
+
+.print-ticket dt {
+  color: #5d6a7c;
+}
+
+.print-ticket dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+.ticket-qr {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-top: 20px;
+  padding: 14px;
+  border: 1px dashed #88a9d4;
+  border-radius: 14px;
+  background: #f4f8ff;
+}
+
+.ticket-qr p,
+.ticket-url {
+  color: #4d5f76;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.ticket-url {
+  overflow-wrap: anywhere;
+}
+
+.ticket-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@media (max-width: 520px) {
+  .ticket-page {
+    padding: 0;
+  }
+
+  .print-ticket {
+    min-height: 100vh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .ticket-qr {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media print {
   .sidebar,
   .topbar,
@@ -2768,5 +2895,22 @@ textarea[aria-invalid="true"] {
   .panel,
   .stat-card {
     box-shadow: none;
+  }
+
+  .ticket-page {
+    min-height: auto;
+    padding: 0;
+    background: #fff;
+  }
+
+  .print-ticket {
+    width: auto;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .no-print {
+    display: none !important;
   }
 }

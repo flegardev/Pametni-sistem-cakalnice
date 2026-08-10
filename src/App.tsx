@@ -9,6 +9,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { NewPatientPage } from "./pages/NewPatientPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PatientStatusPage } from "./pages/PatientStatusPage";
+import { PatientTicketPage } from "./pages/PatientTicketPage";
 import { PatientsPage } from "./pages/PatientsPage";
 import { QueuesPage } from "./pages/QueuesPage";
 import { ReportsPage } from "./pages/ReportsPage";
@@ -32,6 +33,7 @@ export const App = () => (
       <Route path="/about" element={<AboutPage />} />
       <Route path="/display" element={<DisplayPage />} />
       <Route path="/patient/:id/status" element={<PatientStatusPage />} />
+      <Route path="/patient/:id/ticket" element={<PatientTicketPage />} />
       <Route path="/" element={<Navigate replace to="/dashboard" />} />
       <Route element={<RequireAuth />}>
         <Route path="/dashboard" element={<DashboardPage />} />

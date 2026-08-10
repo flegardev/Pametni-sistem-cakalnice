@@ -1,12 +1,16 @@
 import { ArrowLeft, Clock3, Info, QrCode } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { StatusBadge } from "../components/Badge";
 import { StatusTimeline } from "../components/StatusTimeline";
 import { LEGAL_NOTE } from "../data/constants";
 import { useClock } from "../hooks/useClock";
 import { useApp } from "../state/AppContext";
 import { formatTime } from "../utils/format";
+import {
+  createPublicPatientStatusPath,
+  parsePublicPatientSnapshot,
+} from "../utils/publicStatus";
 import {
   getDepartmentName,
   getPatientStatusMessage,
@@ -16,11 +20,13 @@ import {
 
 export const PatientStatusPage = () => {
   const { id } = useParams();
+  const location = useLocation();
   const { patients, settings } = useApp();
   const now = useClock();
   const patient = patients.find((item) => item.id === id);
+  const snapshot = patient ? null : parsePublicPatientSnapshot(location.search);
 
-  if (!patient) {
+  if (!patient && !snapshot) {
     return (
       <main className="status-page">
         <section className="status-card">
@@ -36,9 +42,17 @@ export const PatientStatusPage = () => {
     );
   }
 
-  const position = getQueuePosition(patients, patient);
-  const url = `${window.location.origin}${patient.qrCodeUrl}`;
-  const statusMessage = getPatientStatusMessage(settings, patients, patient);
+  const number = patient?.number ?? snapshot!.number;
+  const status = patient?.status ?? snapshot!.status;
+  const department = patient?.department ?? snapshot!.department;
+  const assignedRoom = patient?.assignedRoom ?? snapshot!.room;
+  const arrivalTime = patient?.arrivalTime ?? snapshot!.arrivalTime;
+  const position = patient ? getQueuePosition(patients, patient) : null;
+  const statusPath = patient ? createPublicPatientStatusPath(patient) : `${location.pathname}${location.search}`;
+  const url = `${window.location.origin}${statusPath}`;
+  const statusMessage = patient
+    ? getPatientStatusMessage(settings, patients, patient)
+    : `Posnetek ob izdaji listka: ${status}.`;
 
   return (
     <main className="status-page">
@@ -59,9 +73,9 @@ export const PatientStatusPage = () => {
         <div className="status-summary">
           <div>
             <span>Vaša številka</span>
-            <div className="patient-number">{patient.number}</div>
+            <div className="patient-number">{number}</div>
           </div>
-          <StatusBadge status={patient.status} />
+          <StatusBadge status={status} />
         </div>
         <div className="status-message" aria-live="polite">
           <span>Ocena stanja</span>
@@ -70,25 +84,27 @@ export const PatientStatusPage = () => {
         <div className="status-grid">
           <div>
             <span>Usmeritev</span>
-            <strong>{getDepartmentName(settings, patient.department)}</strong>
+            <strong>{getDepartmentName(settings, department)}</strong>
           </div>
           <div>
             <span>Položaj v vrsti</span>
             <strong>
               {position
                 ? `${position}. v vrsti`
-                : patient.status === "Poklican" || patient.status === "V obravnavi"
+                : status === "Poklican" || status === "V obravnavi"
                   ? "Poklican"
-                  : "Ni v vrsti"}
+                  : patient
+                    ? "Ni v vrsti"
+                    : "Ni podatka v živo"}
             </strong>
           </div>
           <div>
             <span>Soba</span>
-            <strong>{getRoomName(settings, patient.assignedRoom) || "Bo določena"}</strong>
+            <strong>{getRoomName(settings, assignedRoom) || "Bo določena"}</strong>
           </div>
           <div>
             <span>Prihod</span>
-            <strong>{formatTime(patient.arrivalTime)}</strong>
+            <strong>{formatTime(arrivalTime)}</strong>
           </div>
         </div>
         <section className="timeline-panel" aria-label="Časovnica statusov">
@@ -96,14 +112,25 @@ export const PatientStatusPage = () => {
             <span>Časovnica</span>
             <strong>Vaš potek obravnave</strong>
           </div>
-          <StatusTimeline patient={patient} />
+          {patient ? (
+            <StatusTimeline patient={patient} />
+          ) : (
+            <p className="snapshot-notice">
+              To je zasebnostno omejen posnetek iz QR kode, ne stanje v živo. Povezava ne vsebuje začetnic, leta rojstva, razloga obiska ali opomb.
+            </p>
+          )}
         </section>
         <div className="qr-panel">
           <QRCodeCanvas value={url} size={132} includeMargin />
           <div>
             <QrCode size={22} aria-hidden="true" />
             <strong>QR status povezava</strong>
-            <p>Podatek je informativen. Za uradne informacije se obrnite na osebje.</p>
+            <p>
+              {patient
+                ? "V tem brskalniku se status osvežuje iz lokalnega demo stanja."
+                : "Na drugi napravi je prikazan le posnetek ob izdaji listka."}
+              {" "}Za uradne informacije se obrnite na osebje.
+            </p>
           </div>
         </div>
         <p className="legal-note standalone">{LEGAL_NOTE}</p>

@@ -104,7 +104,7 @@ export const NewPatientPage = () => {
           });
 
           if (printAfterSave) {
-            printPatientTicket(patient, settings);
+            printPatientTicket(patient);
             notify({
               title: "Listek pripravljen",
               description: `${patient.number} ima QR povezavo in navodilo za čakalnico.`,

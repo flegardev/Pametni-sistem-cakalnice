@@ -173,7 +173,10 @@ const formatCsvDateTime = (value?: string) => {
 
 const escapeCsvCell = (value: string | number) => {
   const text = String(value);
-  return /[",\n\r;]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+  const spreadsheetSafe = /^[\t\r\n ]*[=+\-@]/.test(text) ? `'${text}` : text;
+  return /[",\n\r;]/.test(spreadsheetSafe)
+    ? `"${spreadsheetSafe.replace(/"/g, '""')}"`
+    : spreadsheetSafe;
 };
 
 export const getDailyPatientFlowCsv = (
