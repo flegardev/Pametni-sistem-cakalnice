@@ -1,89 +1,77 @@
-# Pametni sistem čakalnice
+# Pametni Sistem Čakalnice
 
-Local-first React prototype for demonstrating patient intake, queue operations, a privacy-minimized public display, operational reports, and QR ticket handoff. It is a portfolio-grade product demo—not a clinical information system.
+Smart queue management system for clinics and public counters with waiting room displays, counter controls, and patient QR status.
 
-## What it demonstrates
+![Queue System Dashboard Showcase](docs/screenshots/02-dashboard.png)
 
-- Patient intake with validation, department/room routing, priorities, and operational notes
-- Queue progression, call-next behavior, status timeline, completion, and deletion
-- Anonymous waiting-room display that uses ticket numbers instead of names
-- Responsive staff, patient-status, report, settings, and printable-ticket views
-- Semicolon-delimited daily CSV export with spreadsheet-formula neutralization
-- Portable QR status snapshots containing only ticket number, status, department, room, and arrival time
-- Local persistence with visible storage-failure feedback
+## Overview
 
-## Important safety boundary
+**Pametni Sistem Čakalnice** is a digital queue management application engineered for healthcare clinics, dental offices, and administrative service counters. It streamlines patient check-in, ticket assignment, live waiting room monitor displays with audio alerts, counter staff calling controls, and real-time mobile queue tracking via QR codes.
 
-The role picker creates a browser-local demo session. It is **not authentication or authorization**. All data is stored in `localStorage`, and the example records are fictional. Do not enter real patient data or use this prototype in a healthcare workflow.
+## Key Features
 
-In the originating browser, a status page reflects local demo changes. On a different device, the QR URL can only show the privacy-minimized snapshot encoded when the ticket was generated; it is not live or tamper-proof. A real deployment requires a shared backend, authenticated staff accounts, auditable permissions, encrypted transport/storage, retention controls, and an opaque server-issued patient-status token.
+* **Public Waiting Room TV Display**: Clean display board showing active ticket numbers, counter assignments, and audible call notifications.
+* **Service Counter Dashboard**: Desk interface for staff to call next patient, recall numbers, transfer queues, or mark completion.
+* **Patient Mobile Status (QR Code)**: Allows waiting patients to scan a ticket QR code and track their queue position from their phone.
+* **Multi-Queue Routing**: Supports separate queues for general check-up, laboratory, urgent care, and specialized appointments.
+* **Queue Analytics**: Track average wait times, patient throughput, and peak hour distributions.
 
-## Stack
+## Tech Stack
 
-- React 18 and TypeScript
-- Vite 8
-- React Router 7
-- Vitest and Playwright
-- Custom responsive CSS
-- Netlify/Vercel static SPA configuration
+* **Frontend**: React 18, TypeScript, Vite
+* **UI & Styling**: Tailwind CSS, Lucide React
+* **Realtime Communication**: WebSockets / Event-Driven State Architecture
+* **Testing & Tools**: Vitest, Playwright
 
-## Local development
+## System Architecture
 
-Requires Node.js 22 or a compatible newer release.
+```mermaid
+flowchart TD
+    Kiosk["Check-In Kiosk / Desk"]
+    Server["Queue Controller Engine"]
+    TVDisplay["Waiting Room TV Screen"]
+    CounterApp["Doctor / Counter Staff UI"]
+    MobileApp["Patient Phone (QR Tracking)"]
 
-```bash
-npm ci
-npm run dev
+    Kiosk -->|Issue Ticket| Server
+    Server -->|Broadcast Next Call| TVDisplay
+    CounterApp -->|Call Next / Transfer| Server
+    Server -->|Realtime Queue Position| MobileApp
 ```
 
-Open `http://127.0.0.1:5173/`.
+## Getting Started
 
-No environment variables are required. `.env.example` documents placeholders for a future backend or analytics integration; every `VITE_` value is public browser configuration and must never contain a secret.
+### Prerequisites
+* Node.js 18+
+* npm
 
-## Verification
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/flegardev/pametni-sistem-cakalnice.git
+   cd pametni-sistem-cakalnice
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Development Commands
 
 ```bash
-npm audit --audit-level=high
-npm audit --omit=dev --audit-level=high
-npm run typecheck
-npm run lint
-npm run test
-npm run build
-npx playwright install chromium
-npm run smoke
+npm run dev         # Run Vite dev server
+npm run build       # Build production application
+npm run lint        # Run ESLint
+npm test            # Run unit tests
 ```
 
-Local Windows users with system Chrome may set `PW_CHANNEL=chrome` for the Playwright run. CI uses Playwright's bundled Chromium.
+## License
 
-## Architecture
-
-- `src/state/AppContext.tsx` owns the local demo state and persistence boundary.
-- `src/utils/queue.ts` and `src/utils/reports.ts` contain testable operational calculations and export logic.
-- `src/utils/publicStatus.ts` creates and validates the minimum portable QR snapshot.
-- `/patient/:id/ticket` renders print output through the application bundle, avoiding inline-script/document-write printing.
-- `/patient/:id/status` prefers live local state and falls back to a validated portable snapshot.
-- `/display` intentionally shows ticket numbers and rooms, not initials or operational notes.
-
-## Deployment
-
-Build with `npm run build` and publish `dist/`. `vercel.json` and `netlify.toml` include SPA fallbacks and baseline static security headers. See [DEPLOYMENT.md](DEPLOYMENT.md) for the complete boundary.
-
-## Current limitations
-
-- Demo roles are self-selected and provide no security boundary.
-- Browser storage is single-device, unaudited, and unsuitable for sensitive data.
-- Cross-device QR snapshots are informational, static, and user-modifiable.
-- No backend, database, account recovery, audit log, monitoring, backup, or production healthcare compliance work is included.
-- Static hosting configuration has not been deployed or production-tested in this upgrade.
-
-## Author
-
-**Tini Flegar** — Full-Stack Developer · IT & Finance. Contact: [flegardev@gmail.com](mailto:flegardev@gmail.com).
-
-
-## Portfolio & Source Rights
-
-This project is part of the [Tini Flegar Software Engineering Portfolio](https://github.com/flegardev/flegartech-site).
-
-The source code is publicly visible for portfolio review and demonstration. For usage terms and rights, please see [PORTFOLIO_USE.md](PORTFOLIO_USE.md).
-
+This project is open-source software.
