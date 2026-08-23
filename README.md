@@ -49,7 +49,7 @@ flowchart TD
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/flegardev/pametni-sistem-cakalnice.git
+   git clone https://github.com/flegardev/Pametni-sistem-cakalnice.git
    cd pametni-sistem-cakalnice
    ```
 
