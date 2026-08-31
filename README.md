@@ -1,77 +1,118 @@
-# Pametni Sistem Čakalnice
+# Pametni Sistem Cakalnice (Smart Waiting Room Management)
 
-Smart queue management system for clinics and public counters with waiting room displays, counter controls, and patient QR status.
+A medical clinic queue management and patient triage platform built with React 18, TypeScript, Vite, and Tailwind CSS, featuring public TV status displays, doctor consultation desks, and patient QR mobile tracking.
 
-![Queue System Dashboard Showcase](docs/screenshots/02-dashboard.png)
+![Smart Waiting Room Dashboard](./docs/screenshots/02-dashboard.png)
 
 ## Overview
 
-**Pametni Sistem Čakalnice** is a digital queue management application engineered for healthcare clinics, dental offices, and administrative service counters. It streamlines patient check-in, ticket assignment, live waiting room monitor displays with audio alerts, counter staff calling controls, and real-time mobile queue tracking via QR codes.
+**Pametni Sistem Cakalnice** is a healthcare waiting room and queue coordination system designed for outpatient clinics and medical practices. It streamlines patient reception, automates digital ticket issuance, optimizes doctor room allocation, and reduces patient waiting friction.
 
-## Key Features
+The application provides dedicated operational views: a reception registration desk, a doctor triage console, a public full-screen TV display board for waiting rooms, and a mobile-friendly status page accessed via ticket QR codes.
 
-* **Public Waiting Room TV Display**: Clean display board showing active ticket numbers, counter assignments, and audible call notifications.
-* **Service Counter Dashboard**: Desk interface for staff to call next patient, recall numbers, transfer queues, or mark completion.
-* **Patient Mobile Status (QR Code)**: Allows waiting patients to scan a ticket QR code and track their queue position from their phone.
-* **Multi-Queue Routing**: Supports separate queues for general check-up, laboratory, urgent care, and specialized appointments.
-* **Queue Analytics**: Track average wait times, patient throughput, and peak hour distributions.
+## Features
+
+- **Digital Ticketing**: Generates categorized queue tickets (e.g., General Practice, Specialist, Emergency) with estimated wait times.
+- **Public TV Waiting Room Display**: Full-screen TV mode (`docs/screenshots/06-javni-zaslon.png`) showing called ticket numbers, room assignments, and visual notifications.
+- **Doctor Consultation Desk**: Real-time triage interface allowing physicians to call the next patient, review visit reasons, reassign queues, and log consultation notes.
+- **Patient QR Mobile Tracking**: Patients scan a unique QR code (`qrcode.react`) on their ticket to monitor live queue progression on their mobile devices.
+- **Operational Reporting**: Dashboards visualizing average waiting durations, daily throughput, peak congestion hours, and room utilization.
+- **In-Memory Demo Mode**: Includes mock datasets and state simulation for offline demonstration and development.
+
+## Screenshots
+
+| Doctor Triage Dashboard | Public TV Waiting Display |
+|:---:|:---:|
+| ![Dashboard](./docs/screenshots/02-dashboard.png) | ![Public TV Display](./docs/screenshots/06-javni-zaslon.png) |
+
+| Live Queue Management | Patient Mobile QR Tracker |
+|:---:|:---:|
+| ![Queue Management](./docs/screenshots/05-cakalne-vrste.png) | ![QR Mobile Status](./docs/screenshots/07-status-qr.png) |
 
 ## Tech Stack
 
-* **Frontend**: React 18, TypeScript, Vite
-* **UI & Styling**: Tailwind CSS, Lucide React
-* **Realtime Communication**: WebSockets / Event-Driven State Architecture
-* **Testing & Tools**: Vitest, Playwright
+- **Frontend Framework**: React 18, React DOM
+- **Routing & State**: React Router 7 (`react-router-dom`), Custom React State Architecture
+- **Language & Build Tool**: TypeScript, Vite
+- **UI Components & Icons**: Lucide React (`lucide-react`), QRCode React (`qrcode.react`)
+- **Styling**: Tailwind CSS / Custom CSS3 Utility Architecture
+- **Testing & Tooling**: Vitest, Playwright, ESLint, TypeScript Compiler
 
-## System Architecture
+## Project Structure
 
-```mermaid
-flowchart TD
-    Kiosk["Check-In Kiosk / Desk"]
-    Server["Queue Controller Engine"]
-    TVDisplay["Waiting Room TV Screen"]
-    CounterApp["Doctor / Counter Staff UI"]
-    MobileApp["Patient Phone (QR Tracking)"]
-
-    Kiosk -->|Issue Ticket| Server
-    Server -->|Broadcast Next Call| TVDisplay
-    CounterApp -->|Call Next / Transfer| Server
-    Server -->|Realtime Queue Position| MobileApp
+```text
+pametni-sistem-cakalnice/
+├── docs/                       # Project specifications and interface screenshots
+│   └── screenshots/            # UI screenshots (Dashboard, TV display, QR tracking)
+├── public/                     # Favicons, audio chime assets, and static files
+├── src/
+│   ├── components/             # Reusable UI widgets (modals, ticket badges, headers)
+│   ├── data/                   # Mock clinic departments, doctors, and demo queues
+│   ├── hooks/                  # Custom state hooks for queue timers and sound alerts
+│   ├── pages/                  # Reception, Doctor Desk, TV Screen, Analytics pages
+│   ├── state/                  # Queue store and event dispatchers
+│   ├── types.ts                # TypeScript domain models (Patient, Ticket, Department)
+│   ├── utils/                  # Date helpers, QR generators, and formatters
+│   ├── App.tsx                 # Route declarations and root layout
+│   └── main.tsx                # Application entrypoint
+├── tests/                      # Vitest unit test suites
+├── _final_desktop_screenshots/ # Production desktop screenshot captures
+├── index.html                  # HTML5 entrypoint template
+├── package.json                # Project dependencies and lifecycle scripts
+├── tsconfig.json               # TypeScript compiler options
+└── vite.config.ts              # Vite bundler configuration
 ```
 
-## Getting Started
+## Installation & Setup
 
 ### Prerequisites
-* Node.js 18+
-* npm
 
-### Installation
+- Node.js 18+ (Node.js 20+ recommended)
+- npm 9+
 
-1. Clone the repository:
+### Setup
+
+1. **Clone the repository:**
    ```bash
-   git clone https://github.com/flegardev/Pametni-sistem-cakalnice.git
+   git clone https://github.com/flegardev/pametni-sistem-cakalnice.git
    cd pametni-sistem-cakalnice
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-3. Start the development server:
+3. **Start the local development server:**
    ```bash
    npm run dev
    ```
 
-## Development Commands
+4. Open [http://127.0.0.1:5173](http://127.0.0.1:5173) in your browser.
 
-```bash
-npm run dev         # Run Vite dev server
-npm run build       # Build production application
-npm run lint        # Run ESLint
-npm test            # Run unit tests
-```
+## Available Routes & Views
 
-## License
+- `/` -- Main Reception & Clinic Dashboard
+- `/cakalne-vrste` -- Live Queue & Doctor Consultation Triage
+- `/javni-zaslon` -- Fullscreen TV Waiting Room Display
+- `/registracija` -- Patient Intake & Ticket Generation
+- `/pacienti` -- Patient Directory & Medical History
+- `/porocila` -- Operational Analytics & Wait Time Reports
+- `/status/:ticketId` -- Patient Mobile QR Live Queue Tracker
 
-This project is open-source software.
+## Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Starts Vite dev server bound to `127.0.0.1` |
+| `npm run build` | Validates types with `tsc -b` and builds production bundle |
+| `npm run preview` | Previews the production build locally |
+| `npm test` | Runs unit test suites using Vitest |
+| `npm run smoke` | Executes end-to-end smoke tests using Playwright |
+| `npm run typecheck` | Validates TypeScript typing across all components |
+| `npm run lint` | Checks code formatting and quality with ESLint |
+
+## License & Portfolio Notice
+
+Copyright (c) 2026 Tini Flegar. All rights reserved.
+Published for portfolio review and technical demonstration.
