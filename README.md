@@ -1,6 +1,8 @@
 # Pametni Sistem Cakalnice (Smart Waiting Room Management)
 
-A medical clinic queue management and patient triage platform built with React 18, TypeScript, Vite, and Tailwind CSS, featuring public TV status displays, doctor consultation desks, and patient QR mobile tracking.
+A browser-based clinic queue demonstration built with React 18, TypeScript, and Vite, featuring TV status displays, consultation desks, and patient QR snapshots.
+
+This is a portfolio demo. Sign-in and patient records are stored in browser localStorage; they do not provide server-enforced authentication or shared, secure persistence. QR snapshots are portable snapshots rather than a verified live cross-device backend. Use synthetic data for demonstrations.
 
 ![Smart Waiting Room Dashboard](./docs/screenshots/02-dashboard.png)
 
@@ -67,7 +69,7 @@ pametni-sistem-cakalnice/
 
 ### Prerequisites
 
-- Node.js 18+ (Node.js 20+ recommended)
+- Node.js 22.12+ or Node.js 24 (verified with Node.js 24)
 - npm 9+
 
 ### Setup
@@ -80,7 +82,7 @@ pametni-sistem-cakalnice/
 
 2. **Install dependencies:**
    ```bash
-   npm install
+   npm ci
    ```
 
 3. **Start the local development server:**
